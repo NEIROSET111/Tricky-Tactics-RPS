@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tricky Tactics TTT</title>
+    <meta name="description" content="Tricky Tactics - но это крестики нолики в телеграмме.">
+    <meta name="keywords" content="игра, крестики-нолики, Tricky Tactics, стратегии, игровое приложение">
+    <meta name="author" content="NEIROSET">
+	<meta property="og:image" content="https://photos.google.com/photo/AF1QipP3WXWIyhUdWWVb4zf2IfAmHZ1Uy8Ud4b65hMg9">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #d7e1ff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Верхнее меню */
+        .top-menu {
+            display: flex;
+            justify-content: space-between;
+            padding: 2vh 2vw;
+            background-color: #4b6efc;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .player-info {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+
+        .player-info img {
+            width: 8vw;
+            height: 8vw;
+            border-radius: 50%;
+            margin-right: 2vw;
+        }
+
+        .player-info div {
+            margin-right: 2vw;
+            font-size: 3vw;
+        }
+
+        .currencies {
+            display: flex;
+            align-items: center;
+        }
+
+        .currencies div {
+            margin-left: 2vw;
+            color: white;
+            font-size: 3vw;
+        }
+
+        /* Поле "Tricky Pass" и таймер */
+        .middle-menu {
+            display: flex;
+            justify-content: space-between;
+            padding: 1vh 2vw;
+            background-color: #d7e1ff;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .tricky-pass {
+            background-color: #f7a400;
+            padding: 1vh 1vw;
+            border-radius: 1vw;
+            width: 70%;
+            font-size: 3vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .tricky-pass .progress-bar {
+            background-color: #ffcc00;
+            height: 2vh;
+            border-radius: 1vw;
+            margin-bottom: 1vh;
+            width: 50%;
+        }
+
+        .secret-field {
+            background-color: red;
+            color: white;
+            padding: 1vh 1vw;
+            border-radius: 1vw;
+            width: 20%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3vw;
+            height: auto;
+        }
+
+        /* Нижние элементы */
+        .bottom-section {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2vh 2vw;
+            box-sizing: border-box;
+        }
+
+       .deck-button {
+			background: linear-gradient(to bottom right, #3a9bff, #2988f6); /* Градиентный переход от верхнего левого к нижнему правому углу */
+			color: white;
+			padding: 1.5vh 1.5vw;
+			border-radius: 6.7vw; /* Закругление */
+			margin-bottom: 1vh;
+			text-align: center;
+			font-size: 3vw;
+			width: 30%; /* Пропорции относительно других элементов */
+			border: 4px solid #216278; /* Обводка */
+			user-select: none; /* Предотвращение выделения */
+			position: relative; /* Для позиционирования белой точки */
+}
+        .battle-secret {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 1vh;
+        }
+
+        .secret-left {
+            background-color: red;
+            color: white;
+            padding: 2vh 2vw;
+            border-radius: 1vw;
+            font-size: 3vw;
+            width: 20%;
+            user-select: none; /* Предотвращение выделения */
+        }
+
+        .battle-button {
+            background-color: #f7a400;
+            color: white;
+            padding: 2vh 2vw;
+            border-radius: 1vw;
+            font-size: 3vw;
+            width: 70%;
+            text-align: center;
+            position: relative;
+            user-select: none; /* Предотвращение выделения */
+        }
+
+        .battle-button::after {
+            content: '0000';
+            position: absolute;
+            bottom: -1.5vh;
+            right: 50%;
+            transform: translateX(50%);
+            background-color: #ffcc00;
+            padding: 0.5vh 1vw;
+            border-radius: 0.5vw;
+            color: black;
+            font-size: 2vw;
+            user-select: none; /* Предотвращение выделения */
+        }
+
+        /* Нижнее меню */
+        .bottom-menu {
+            display: flex;
+            justify-content: space-between;
+            background-color: #ccc;
+            width: 100%;
+            padding: 2vh 2vw;
+            box-sizing: border-box;
+        }
+
+        .button-group {
+            display: flex;
+            width: 100%;
+            justify-content: space-around;
+        }
+
+        .button-group button {
+            background-color: #4b6efc;
+            border: none;
+            padding: 2vh 2vw;
+            color: white;
+            border-radius: 1vw;
+            cursor: pointer;
+            flex: 1;
+            margin: 0 1vw;
+            font-size: 3vw;
+            user-select: none; /* Предотвращение выделения */
+        }
+
+        /* Media Queries для адаптации под разные экраны */
+        @media (max-width: 600px) {
+            .player-info div, .currencies div, .tricky-pass, .secret-field, .button-group button, .secret-left, .deck-button {
+                font-size: 4vw;
+            }
+
+            .player-info img {
+                width: 12vw;
+                height: 12vw;
+            }
+
+            .tricky-pass .progress-bar {
+                height: 3vh;
+            }
+
+            .battle-button::after {
+                font-size: 3vw;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Верхнее меню -->
+    <div class="top-menu">
+        <div class="player-info">
+            <img src="player-icon.png" alt="Player Icon">
+            <div>
+                <div>Player's name</div>
+                <div>Clan Name</div>
+            </div>
+        </div>
+        <div class="currencies">
+            <div>0000000</div>
+            <div>0000000</div>
+            <div>0000000</div>
+        </div>
+    </div>
+
+    <!-- Поле "Tricky Pass" и таймер под верхним меню -->
+    <div class="middle-menu">
+        <div class="tricky-pass">
+            <div class="progress-bar"></div>
+            <div>Season ends: 004d 00h</div>
+        </div>
+        <div class="secret-field">СЕКРЕТНО</div>
+    </div>
+
+    <!-- Нижние элементы, привязанные к низу экрана -->
+    <div class="bottom-section">
+        <div class="deck-button">DECK</div>
+        <div class="battle-secret">
+            <div class="secret-left">СЕКРЕТНО</div>
+            <button class="battle-button">LET'S BATTLE!</button>
+        </div>
+        <div class="bottom-menu">
+            <div class="button-group">
+                <button>Friends</button>
+                <button>Shop</button>
+                <button>Clan</button>
+                <button>Settings</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
